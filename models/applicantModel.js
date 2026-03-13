@@ -25,7 +25,7 @@ const applicantSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    gitHubLink: String,
+    githubLink: String,
     linkedinLink: String
 })
 
