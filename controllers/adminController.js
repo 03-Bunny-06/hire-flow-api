@@ -22,7 +22,7 @@ const adminRegisterController = async (req, res) => {
         if(!validatedCredentials.success){
             return res.status(400).json({
                 msg: "Validation Failed",
-                error: validatedCredentials.error
+                error: validatedCredentials.error.message
             })
         }
 
