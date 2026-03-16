@@ -1,7 +1,7 @@
 const z = require("zod");
 
 const adminSchema = z.object({
-    name: z.string().minLength(5),
+    name: z.string().min(5),
     password: z.string().min(8, 'Password is too short')
 })
 
