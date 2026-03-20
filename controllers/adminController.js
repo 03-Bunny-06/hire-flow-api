@@ -60,7 +60,7 @@ const adminSignInController = async(req, res) => {
 
         if(!adminExists){
             return res.status(404).json({
-                msg: 'Admin does not exist (or) incorrect credentials'
+                msg: 'Admin does not exist'
             })
         }
 
