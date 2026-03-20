@@ -56,6 +56,17 @@ const adminSignInController = async(req, res) => {
         const password = req.headers.password;
         const JWT_KEY = process.env.JWT_KEY;
 
+        const data = {name, password}
+
+        const validatedCredentials = adminSchema.safeParse(data);
+
+        if(!validatedCredentials.success){
+            return res.status(400).json({
+                msg: "Validation Failed",
+                error: validatedCredentials.error.message
+            })
+        }
+
         const adminExists = await Admin.findOne({name: name});
 
         if(!adminExists){
