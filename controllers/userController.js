@@ -53,13 +53,17 @@ const userRegisterController = async(req, res) => {
 
 const userSignInController = async(req, res) => {
     try{
-        const name = req.headers.name;
+        const email = req.headers.email;
         const password = req.headers.password;
         const JWT_KEY = process.env.JWT_KEY;
 
-        const data = {name, password};
+        const data = {email, password};
+
+        console.log(data);
 
         const validatedCredentials = userSignInSchema.safeParse(data);
+
+        console.log(validatedCredentials);
 
         if(!validatedCredentials.success){
             return res.status(400),json({
@@ -70,6 +74,8 @@ const userSignInController = async(req, res) => {
 
         const userExists = await User.findOne({email: validatedCredentials.data.email});
 
+        console.log(userExists);
+
         if(!userExists){
             return res.status(404).json({
                 msg: 'User does not exist'
@@ -77,7 +83,7 @@ const userSignInController = async(req, res) => {
         }
 
         const isValidPassword = await bcrypt.compare(validatedCredentials.data.password, userExists.password);
-        const token = jwt.sign({userId: userExists._id}, JWT_KEY);
+        const token = jwt.sign({userId: userExists._id, roles: userExists.roles}, JWT_KEY);
 
         if(isValidPassword){
             return res.status(200).json({
