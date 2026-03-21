@@ -4,8 +4,9 @@ env.config({path: '../.env'});
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const userSchema = require("../validations/userValidation");
+const {userRegisterSchema, userSignInSchema} = require("../validations/userValidation");
 const User = require("../models/userModel");
+const { email } = require("zod");
 
 const userRegisterController = async(req, res) => {
     try{
@@ -17,7 +18,7 @@ const userRegisterController = async(req, res) => {
 
         const data = {email, password, roles};
 
-        const validatedCredentials = userSchema.safeParse(data);
+        const validatedCredentials = userRegisterSchema.safeParse(data);
 
         console.log(validatedCredentials);
 
@@ -50,4 +51,50 @@ const userRegisterController = async(req, res) => {
     }
 }
 
-module.exports = userRegisterController;
+const userSignInController = async(req, res) => {
+    try{
+        const name = req.headers.name;
+        const password = req.headers.password;
+        const JWT_KEY = process.env.JWT_KEY;
+
+        const data = {name, password};
+
+        const validatedCredentials = userSignInSchema.safeParse(data);
+
+        if(!validatedCredentials.success){
+            return res.status(400),json({
+                msg: 'Validation Failed',
+                error: validatedCredentials.error.message
+            })
+        }
+
+        const userExists = await User.findOne({email: validatedCredentials.data.email});
+
+        if(!userExists){
+            return res.status(404).json({
+                msg: 'User does not exist'
+            })
+        }
+
+        const isValidPassword = await bcrypt.compare(validatedCredentials.data.password, userExists.password);
+        const token = jwt.sign({userId: userExists._id}, JWT_KEY);
+
+        if(isValidPassword){
+            return res.status(200).json({
+                msg: 'User signed in successfully!',
+                token: token
+            })
+        }
+
+        return res.status(403).json({
+            msg: 'Invalid Password'
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {userRegisterController, userSignInController};

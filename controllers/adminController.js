@@ -67,7 +67,7 @@ const adminSignInController = async(req, res) => {
             })
         }
 
-        const adminExists = await Admin.findOne({name: name});
+        const adminExists = await Admin.findOne({name: validatedCredentials.data.name});
 
         if(!adminExists){
             return res.status(404).json({
@@ -75,8 +75,8 @@ const adminSignInController = async(req, res) => {
             })
         }
 
-        const isValidPassword = await bcrypt.compare(password, adminExists.password);
-        const token = jwt.sign({name: name}, JWT_KEY);
+        const isValidPassword = await bcrypt.compare(validatedCredentials.data.password, adminExists.password);
+        const token = jwt.sign({adminId: adminExists._id}, JWT_KEY);
 
         if(isValidPassword){
             return res.status(200).json({
