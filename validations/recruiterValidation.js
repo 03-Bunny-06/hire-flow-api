@@ -5,7 +5,7 @@ const recruiterSchema = z.object({
     name: z.string(),
     nameOfCompany: z.string().min(2),
     companyUrl: z.string(),
-    sizesOfCompany: z.enum(sizesOfCompany),
+    sizeOfCompany: z.enum(sizesOfCompany),
     companyDescription: z.string().min(10),
     industry: z.string(),
     location: z.string()
