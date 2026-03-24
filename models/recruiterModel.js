@@ -7,6 +7,10 @@ const recruiterSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
     nameOfCompany: {
         type: String,
         required: true

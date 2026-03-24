@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 
 const {userRegisterSchema, userSignInSchema} = require("../validations/userValidation");
 const User = require("../models/userModel");
-const { email } = require("zod");
 
 const userRegisterController = async(req, res) => {
     try{

@@ -1,5 +1,50 @@
-const {recruiterSchema} = require("../validations/recruiterValidation");
+const env = require("dotenv");
+env.config({path: '../.env'});
+const jwt = require("jsonwebtoken");
+const recruiterSchema = require("../validations/recruiterValidation");
+const User = require("../models/userModel");
+const Recruiter = require("../models/recruiterModel");
 
 const recruiterProfileController = async(req, res) => {
-    
+    try{
+        const userId = req.userId;
+        const name = req.body.name;
+        const nameOfCompany = req.body.nameOfCompany;
+        const companyUrl = req.body.companyUrl;
+        const sizeOfCompany = req.body.sizeOfCompany;
+        const companyDescription = req.body.companyDescription;
+        const industry = req.body.industry;
+        const location = req.body.location;
+
+        const data = {name, nameOfCompany, companyUrl, sizeOfCompany, companyDescription, industry, location};
+
+        const validatedCredentials = recruiterSchema.safeParse(data);
+
+        if(!validatedCredentials.success){
+            return res.status(400).json({
+                msg: 'Validation Falied',
+                error: validatedCredentials.error.message
+            })
+        }
+
+        const recruiter = await Recruiter.create({userId, ...data});
+
+        const JWT_KEY = process.env.JWT_KEY;
+        const token = jwt.sign({recruiterId: recruiter._id}, JWT_KEY);
+
+        await User.findByIdAndUpdate({_id: userId}, {$set: {
+            isProfileCreated: true
+        }})
+        res.status(201).json({
+            token,
+            msg: 'Recruiter Profile created successfully!'
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
 }
+
+module.exports = recruiterProfileController;
