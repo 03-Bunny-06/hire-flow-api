@@ -27,11 +27,13 @@ const recruiterProfileController = async(req, res) => {
             })
         }
 
+        //creating new recruiter
         const recruiter = await Recruiter.create({userId, ...data});
 
         const JWT_KEY = process.env.JWT_KEY;
         const token = jwt.sign({recruiterId: recruiter._id}, JWT_KEY);
 
+        //marking the user isProfileCreated as true
         await User.findByIdAndUpdate({_id: userId}, {$set: {
             isProfileCreated: true
         }})
