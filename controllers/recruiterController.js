@@ -5,6 +5,7 @@ const recruiterSchema = require("../validations/recruiterValidation");
 const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
 
+//recruiter controller
 const recruiterProfileController = async(req, res) => {
     try{
         const userId = req.userId;
