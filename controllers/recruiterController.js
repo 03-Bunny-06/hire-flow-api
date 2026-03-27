@@ -29,6 +29,16 @@ const recruiterProfileController = async(req, res) => {
             })
         }
 
+        const recruiterAlreadyExists = await Recruiter.findOne({userId});
+
+        console.log(recruiterAlreadyExists);
+
+        if(recruiterAlreadyExists){
+            return res.status(409).json({
+                msg: 'Recruiter cannot be created (recruiter already exists)'
+            })
+        }
+
         //creating new recruiter
         const recruiter = await Recruiter.create({userId, ...data});
 
