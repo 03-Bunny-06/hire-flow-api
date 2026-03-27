@@ -5,5 +5,6 @@ const router = Router();
 
 router.post('/profile', userMiddleware, recruiterProfileController);
 router.get('/profile', userMiddleware, recruiterProfile);
+router.post('/', userMiddleware);
 
 module.exports = router;
