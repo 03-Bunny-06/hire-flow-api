@@ -1,6 +1,7 @@
 const env = require("dotenv");
 env.config({path: '../.env'});
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const recruiterSchema = require("../validations/recruiterValidation");
 const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
@@ -50,4 +51,32 @@ const recruiterProfileController = async(req, res) => {
     }
 }
 
-module.exports = recruiterProfileController;
+const recruiterProfile = async(req, res) => {
+    //get the recruiter profile
+    try{
+        const userId = req.userId;
+
+        const isValidUserId = mongoose.isValidObjectId(userId);
+
+        if(!isValidUserId){
+            return res.status(404).json({
+                msg: 'Invalid User ID'
+            })
+        }
+
+        const recruiter = await Recruiter.findOne({userId: userId});
+
+        console.log(recruiter);
+
+        res.status(200).json({
+            profile: recruiter
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {recruiterProfileController, recruiterProfile};
