@@ -10,4 +10,19 @@ const recruiterMiddleware = async(req, res, next) => {
             msg: 'Authorization header missing'
         })
     }
+
+    try{
+        const splitToken = token.split();
+        const rawToken = splitToken[0];
+        const JWT_KEY = process.env.JWT_KEY;
+
+        const decodedRawToken = jwt.verify(rawToken, JWT_KEY);
+    }
+    catch(e){
+        return res.status(500).json({
+            error: e.message
+        })
+    }
 }
+
+module.exports = recruiterMiddleware;
