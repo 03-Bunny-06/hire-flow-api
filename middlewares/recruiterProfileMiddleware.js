@@ -13,10 +13,16 @@ const recruiterMiddleware = async(req, res, next) => {
 
     try{
         const splitToken = token.split();
-        const rawToken = splitToken[0];
+        const rawToken = splitToken[1];
         const JWT_KEY = process.env.JWT_KEY;
 
         const decodedRawToken = jwt.verify(rawToken, JWT_KEY);
+        const decodedRecruiterId = decodedRawToken.recruiterId;
+
+        if(decodedRecruiterId){
+            req.recruiterId = decodedRecruiterId;\
+            next();
+        }
     }
     catch(e){
         return res.status(500).json({
