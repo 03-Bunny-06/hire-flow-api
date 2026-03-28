@@ -20,7 +20,7 @@ const recruiterMiddleware = async(req, res, next) => {
         const decodedRecruiterId = decodedRawToken.recruiterId;
 
         if(decodedRecruiterId){
-            req.recruiterId = decodedRecruiterId;\
+            req.recruiterId = decodedRecruiterId;
             next();
         }
     }
