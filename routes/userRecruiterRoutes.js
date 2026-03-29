@@ -1,5 +1,5 @@
 const {Router} = require("express");
-const userMiddleware = require("../middlewares/userAuthMiddleware");
+const {userMiddleware} = require("../middlewares/userAuthMiddleware");
 const {recruiterProfileController, recruiterProfile} = require("../controllers/recruiterController")
 const router = Router();
 
