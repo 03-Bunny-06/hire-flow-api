@@ -89,4 +89,32 @@ const recruiterProfile = async(req, res) => {
     }
 }
 
+const jobCreationController = async(req, res) => {
+    try{
+        const userId = req.userId;
+
+        const recruiter = await Recruiter.findOne({userId: userId});
+
+        console.log(recruiter);
+
+        console.log(recruiter._id);
+
+        const recruiterId = recruiter._id;
+        const isValidRecruiterId = mongoose.isValidObjectId(recruiterId);
+
+        if(!isValidRecruiterId){
+            return res.status(404).json({
+                msg: 'RecruiterID does not exist!'
+            })
+        }
+
+        
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
 module.exports = {recruiterProfileController, recruiterProfile};
