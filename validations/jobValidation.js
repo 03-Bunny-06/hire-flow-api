@@ -12,7 +12,7 @@ const jobSchema = z.object({
     applyBy: z.coerce.date(),
     eligibilityCriteria: z.object({
         educationDetails: z.string(),
-        yearOfGraduation: z.number()
+        yearOfGraduation: z.string()
     }),
     jobLocation: z.string(),
     skillsRequired: z.array(z.string())

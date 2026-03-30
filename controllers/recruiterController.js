@@ -3,8 +3,10 @@ env.config({path: '../.env'});
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const recruiterSchema = require("../validations/recruiterValidation");
+const jobSchema = require("../validations/jobValidation");
 const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
+const Job = require("../models/jobModel");
 
 //recruiter controller
 const recruiterProfileController = async(req, res) => {
@@ -100,6 +102,7 @@ const jobCreationController = async(req, res) => {
         console.log(recruiter._id);
 
         const recruiterId = recruiter._id;
+        const nameOfCompany = recruiter.nameOfCompany;
         const isValidRecruiterId = mongoose.isValidObjectId(recruiterId);
 
         if(!isValidRecruiterId){
@@ -108,7 +111,42 @@ const jobCreationController = async(req, res) => {
             })
         }
 
+        const {
+               jobRole, 
+               costToCompany, 
+               openings, 
+               serviceAgreement, 
+               typeOfEmployement, 
+               applyBy, 
+               eligibilityCriteria, 
+               jobLocation, 
+               skillsRequired} = req.body;
         
+        const jobData = {recruiterId,
+               nameOfCompany, 
+               jobRole, 
+               costToCompany, 
+               openings, 
+               serviceAgreement, 
+               typeOfEmployement, 
+               applyBy, 
+               eligibilityCriteria, 
+               jobLocation, 
+               skillsRequired};
+        
+        const validatedCredentials = jobSchema.safeParse(jobData);
+
+        if(!validatedCredentials.success){
+            return res.status(400).json({
+                msg: 'Validation Failed',
+                error: validatedCredentials.error.message
+            })
+        }
+
+        await Job.create(jobData);
+        res.status(201).json({
+            msg: 'Job Created successfully!'
+        })
     }
     catch(e){
         res.status(500).json({
@@ -117,4 +155,4 @@ const jobCreationController = async(req, res) => {
     }
 }
 
-module.exports = {recruiterProfileController, recruiterProfile};
+module.exports = {recruiterProfileController, recruiterProfile, jobCreationController};

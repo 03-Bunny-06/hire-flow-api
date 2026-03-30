@@ -44,7 +44,7 @@ const jobSchema = new mongoose.Schema({
             required: true
         },
         yearOfGraduation: {
-            type: Number,
+            type: String,
             required: true
         }
     },
