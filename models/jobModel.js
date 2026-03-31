@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const yearsOfService = [0, 1, 2, 3, 4]
+const yearsOfService = ["0", "1", "2", "3", "4"]
 const typesOfEmployement = ['full-time', 'contract', 'internship']
 const jobSchema = new mongoose.Schema({
     recruiterId: {
@@ -8,6 +8,7 @@ const jobSchema = new mongoose.Schema({
         ref: 'Recruiter',
         required: true
     },
+    
     nameOfCompany: {
         type: String,
         required: true
@@ -25,7 +26,7 @@ const jobSchema = new mongoose.Schema({
         required: true
     },
     serviceAgreement: {
-        type: Number,
+        type: String,
         enum: yearsOfService,
         required: true
     },

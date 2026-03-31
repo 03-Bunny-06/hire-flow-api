@@ -103,6 +103,7 @@ const jobCreationController = async(req, res) => {
 
         const recruiterId = recruiter._id;
         const nameOfCompany = recruiter.nameOfCompany;
+        const jobLocation = recruiter.location;
         const isValidRecruiterId = mongoose.isValidObjectId(recruiterId);
 
         if(!isValidRecruiterId){
@@ -119,7 +120,6 @@ const jobCreationController = async(req, res) => {
                typeOfEmployement, 
                applyBy, 
                eligibilityCriteria, 
-               jobLocation, 
                skillsRequired} = req.body;
         
         const jobData = {recruiterId,

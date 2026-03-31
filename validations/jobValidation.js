@@ -1,6 +1,6 @@
 const z = require("zod");
 
-const yearsOfService = [0, 1, 2, 3, 4]
+const yearsOfService = ["0", "1", "2", "3", "4"];
 const typesOfEmployement = ['full-time', 'contract', 'internship']
 const jobSchema = z.object({
     nameOfCompany: z.string().min(2),
