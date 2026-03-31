@@ -185,4 +185,34 @@ const jobFetchingController = async(req, res) => {
     }
 }
 
-module.exports = {recruiterProfileController, recruiterProfile, jobCreationController, jobFetchingController};
+const jobFetchingByIdController = async(req, res) => {
+    try{
+        const userId = req.userId;
+        const jobId = req.params.id;
+
+        const recruiter = await Recruiter.findOne({userId: userId});
+
+        const recruiterId = recruiter._id;
+
+        const isValidJobId = mongoose.isValidObjectId(jobId);
+
+        if(!isValidJobId){
+            return res.status(404).json({
+                msg: 'Invalid Job ID'
+            })
+        }
+
+        const job = await Job.findOne({recruiterId: recruiterId, _id: jobId});
+        res.status(404).json({
+            msg: 'Job data fetched successfully!',
+            data: job
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {recruiterProfileController, recruiterProfile, jobCreationController, jobFetchingController, jobFetchingByIdController};
