@@ -3,7 +3,7 @@ env.config({path: '../.env'});
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const recruiterSchema = require("../validations/recruiterValidation");
-const jobSchema = require("../validations/jobValidation");
+const {jobSchema, updateJobSchema} = require("../validations/jobValidation");
 const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
 const Job = require("../models/jobModel");
@@ -291,7 +291,18 @@ const jobUpationByIdController = async(req, res) => {
             skillsRequired
         }
 
-        const validatedCredentials = jobSchema.safeParse(updates);
+        const noOfUpdates = Object.values(updates).length;
+
+        console.log(noOfUpdates);
+        console.log(noOfUpdates === 0);
+
+        if(noOfUpdates === 0){
+            return res.status(400).json({
+                msg: 'Empty data sent no updates needed!'
+            })
+        }
+
+        const validatedCredentials = updateJobSchema.safeParse(updates);
 
         if(!validatedCredentials.success){
             return res.status(400).json({
@@ -300,7 +311,8 @@ const jobUpationByIdController = async(req, res) => {
             })
         }
 
-        const updateJob = await Job.findOneAndUpdate({recruiterId}, {$set: validatedCredentials.data});
+        const updateJob = await Job.findOneAndUpdate({_id:jobId, recruiterId}, {$set: validatedCredentials.data});
+        console.log(updateJob);
         res.status(201).json({
             msg: 'Job Updated Successfully!'
         })

@@ -18,4 +18,8 @@ const jobSchema = z.object({
     skillsRequired: z.array(z.string())
 })
 
-module.exports = jobSchema;
+const updateJobSchema = jobSchema.partial().extend({
+  eligibilityCriteria: jobSchema.shape.eligibilityCriteria.partial().optional()
+});
+
+module.exports = {jobSchema, updateJobSchema};
