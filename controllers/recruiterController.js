@@ -253,4 +253,63 @@ const jobDeletionByIdController = async(req, res) => {
     }
 }
 
-module.exports = {recruiterProfileController, recruiterProfile, jobCreationController, jobFetchingController, jobFetchingByIdController, jobDeletionByIdController};
+const jobUpationByIdController = async(req, res) => {
+    try{
+        const userId = req.userId;
+        const jobId = req.params.id;
+        
+        const {
+               jobRole, 
+               costToCompany, 
+               openings, 
+               serviceAgreement, 
+               typeOfEmployement, 
+               applyBy, 
+               eligibilityCriteria, 
+               skillsRequired} = req.body;
+
+        const recruiter = await Recruiter.findOne({userId});
+
+        const recruiterId = recruiter._id;
+
+        const isValidJobId = mongoose.isValidObjectId(jobId);
+
+        if(!isValidJobId){
+            return res.status(404).json({
+                msg: 'Invalid Job ID'
+            })
+        }
+
+        const updates = {
+            jobRole,
+            costToCompany,
+            openings,
+            serviceAgreement,
+            typeOfEmployement,
+            applyBy,
+            eligibilityCriteria,
+            skillsRequired
+        }
+
+        const validatedCredentials = jobSchema.safeParse(updates);
+
+        if(!validatedCredentials.success){
+            return res.status(400).json({
+                msg: 'Validation Falied',
+                error: validatedCredentials.error.message
+            })
+        }
+
+        const updateJob = await Job.findOneAndUpdate({recruiterId}, {$set: validatedCredentials.data});
+        res.status(201).json({
+            msg: 'Job Updated Successfully!'
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {recruiterProfileController, recruiterProfile, jobCreationController, jobFetchingController, jobFetchingByIdController, jobDeletionByIdController, jobUpationByIdController};
