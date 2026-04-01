@@ -215,4 +215,42 @@ const jobFetchingByIdController = async(req, res) => {
     }
 }
 
-module.exports = {recruiterProfileController, recruiterProfile, jobCreationController, jobFetchingController, jobFetchingByIdController};
+const jobDeletionByIdController = async(req, res) => {
+    try{
+        const userId = req.userId;
+        const jobId = req.params.id;
+
+        const recruiter = await Recruiter.findOne({userId});
+
+        const recruiterId = recruiter._id;
+
+        const isValidJobId = mongoose.isValidObjectId(jobId);
+
+        if(!isValidJobId){
+            return res.status(404).json({
+                msg: 'Invalid Job ID'
+            })
+        }
+
+        const deletedJob =  await Job.findOneAndDelete({recruiterId: recruiterId, _id: jobId});
+
+        console.log(deletedJob);
+
+        if(!deletedJob){
+            return res.status(404).json({
+                msg: 'Job not found with this Job ID'
+            })
+        }
+        
+        res.status(200).json({
+            msg: 'Job deleted successfully!'
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {recruiterProfileController, recruiterProfile, jobCreationController, jobFetchingController, jobFetchingByIdController, jobDeletionByIdController};
