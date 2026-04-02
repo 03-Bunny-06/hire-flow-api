@@ -159,6 +159,9 @@ const jobFetchingController = async(req, res) => {
     try{
         const userId = req.userId;
 
+        const p = req.query.page;
+        const l = req.query.limit;
+
         const recruiter = await Recruiter.findOne({userId: userId});
 
         const recruiterId = recruiter._id;
@@ -171,11 +174,43 @@ const jobFetchingController = async(req, res) => {
             })
         }
 
-        const jobs = await Job.find({recruiterId: recruiterId});
+        let query = Job.find({recruiterId: recruiterId});
+
+        const hasPagination = !!(p || l);
+
+        let page, limit, totalJobs, totalPages;
+
+        if(hasPagination){
+            page = Math.max(1, Number(p));
+            limit = Math.max(5, Number(l));
+
+            totalJobs = await Job.countDocuments({});
+            totalPages = Math.ceil(totalJobs/limit);
+
+            if(page > totalPages && totalJobs > 0){
+                return res.status(404).json({
+                    msg: 'Page does not exist'
+                })
+            }
+
+            const skip = (page - 1) * limit;
+            console.log(skip);
+
+            query = query.skip(skip).limit(limit);
+        }
+
+        const jobsData = await query;
 
         res.status(200).json({
+            totalJobs: totalJobs,
             msg: "Job data fetched successfully!",
-            data: jobs
+            ...(hasPagination && {
+                msg: "Pagination Successful",
+                currentPage: page,
+                limitForEachPage: limit,
+                totalPages: totalPages
+            }),
+            data: jobsData
         })
     }
     catch(e){
