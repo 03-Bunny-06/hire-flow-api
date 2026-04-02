@@ -258,15 +258,7 @@ const jobUpationByIdController = async(req, res) => {
         const userId = req.userId;
         const jobId = req.params.id;
         
-        const {
-               jobRole, 
-               costToCompany, 
-               openings, 
-               serviceAgreement, 
-               typeOfEmployement, 
-               applyBy, 
-               eligibilityCriteria, 
-               skillsRequired} = req.body;
+        const updates = req.body;
 
         const recruiter = await Recruiter.findOne({userId});
 
@@ -279,22 +271,13 @@ const jobUpationByIdController = async(req, res) => {
                 msg: 'Invalid Job ID'
             })
         }
-
-        const updates = {
-            jobRole,
-            costToCompany,
-            openings,
-            serviceAgreement,
-            typeOfEmployement,
-            applyBy,
-            eligibilityCriteria,
-            skillsRequired
-        }
-
+        
         const noOfUpdates = Object.values(updates).length;
 
         console.log(noOfUpdates);
-        console.log(noOfUpdates === 0);
+
+        const areThereAnyUpdates = noOfUpdates === 0;
+        console.log(areThereAnyUpdates);
 
         if(noOfUpdates === 0){
             return res.status(400).json({
