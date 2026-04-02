@@ -59,6 +59,8 @@ const jobSchema = new mongoose.Schema({
     }]
 })
 
+jobSchema.index({jobRole: "text", serviceAgreement: "text", typesOfEmployement: "text", jobLocation: "text", skillsRequired: "text"})
+
 const Job = mongoose.model('Job', jobSchema)
 
 module.exports = Job;
