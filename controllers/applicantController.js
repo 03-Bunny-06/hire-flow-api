@@ -88,7 +88,11 @@ const applicantJobFetchingController = async(req, res) => {
 
         const applicant = await Applicant.findOne({userId: userId});
 
+        const applicantName = applicant.name;
+
         const jobs = await Job.find({});
+
+        console.log(`${applicantName} is fetching jobs!`);
 
         res.status(200).json({
             data: jobs
