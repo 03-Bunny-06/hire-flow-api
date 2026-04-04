@@ -3,6 +3,7 @@ const applicantSchema = require("../validations/applicantValidation");
 
 const User = require("../models/userModel");
 const Applicant = require("../models/applicantModel");
+const Job = require("../models/jobModel");
 
 const applicantProfileController = async(req, res) => {
     try{
@@ -81,4 +82,23 @@ const applicantProfile = async(req, res) => {
     }
 }
 
-module.exports = {applicantProfileController, applicantProfile};
+const applicantJobFetchingController = async(req, res) => {
+    try{
+        const userId = req.userId;
+
+        const applicant = await Applicant.findOne({userId: userId});
+
+        const jobs = await Job.find({});
+
+        res.status(200).json({
+            data: jobs
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController};
