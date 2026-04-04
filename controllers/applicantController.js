@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const applicantSchema = require("../validations/applicantValidation");
 
 const User = require("../models/userModel");
@@ -38,10 +39,9 @@ const applicantProfileController = async(req, res) => {
         console.log(applicantAlreadyExists);
 
         //creating an applicant
-        const applicant = await Applicant.create(userId, ...data);
+        const applicant = await Applicant.create({userId, ...data});
 
-        await User.findOne({_id: userId}, {
-            $set: {
+        await User.findByIdAndUpdate({_id: userId}, {$set: {
                 isProfileCreated: true
             }
         })
@@ -56,4 +56,29 @@ const applicantProfileController = async(req, res) => {
     }
 }
 
-module.exports = applicantProfileController;
+const applicantProfile = async(req, res) => {
+    try{
+        const userId = req.userId;
+        
+        const isValidUserId = mongoose.isValidObjectId(userId);
+        
+        if(!isValidUserId){
+            return res.status(404).json({
+                msg: 'Invalid User ID'
+            })
+        }
+
+        const applicant = await Applicant.findOne({userId: userId});
+
+        res.status(200).json({
+            profile: applicant
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {applicantProfileController, applicantProfile};
