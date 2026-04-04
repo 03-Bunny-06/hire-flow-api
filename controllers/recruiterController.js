@@ -234,6 +234,12 @@ const recruiterJobFetchingByIdController = async(req, res) => {
         }
 
         const job = await Job.findOne({recruiterId: recruiterId, _id: jobId});
+        if(job === null){
+            return res.status(404).json({
+                msg: 'Job not Found'
+            })
+        }
+
         res.status(404).json({
             msg: 'Job data fetched successfully!',
             data: job
