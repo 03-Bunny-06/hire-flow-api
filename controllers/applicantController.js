@@ -42,12 +42,12 @@ const applicantProfileController = async(req, res) => {
         //creating an applicant
         const applicant = await Applicant.create({userId, ...data});
 
+        //marking the user isProfileCreated as true
         await User.findByIdAndUpdate({_id: userId}, {$set: {
-                isProfileCreated: true
-            }
-        })
+            isProfileCreated: true
+        }})
         res.status(201).json({
-            msg: "Applicant Profile created successfully!"
+            msg: 'Recruiter Profile created successfully!'
         })
     }
     catch(e){
