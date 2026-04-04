@@ -87,7 +87,7 @@ const recruiterProfile = async(req, res) => {
     }
 }
 
-const jobCreationController = async(req, res) => {
+const recruiterJobCreationController = async(req, res) => {
     try{
         const userId = req.userId;
 
@@ -151,7 +151,7 @@ const jobCreationController = async(req, res) => {
     }
 }
 
-const jobFetchingController = async(req, res) => {
+const recruiterJobFetchingController = async(req, res) => {
     try{
         const userId = req.userId;
 
@@ -216,7 +216,7 @@ const jobFetchingController = async(req, res) => {
     }
 }
 
-const jobFetchingByIdController = async(req, res) => {
+const recruiterJobFetchingByIdController = async(req, res) => {
     try{
         const userId = req.userId;
         const jobId = req.params.id;
@@ -246,7 +246,7 @@ const jobFetchingByIdController = async(req, res) => {
     }
 }
 
-const jobDeletionByIdController = async(req, res) => {
+const recruiterJobDeletionByIdController = async(req, res) => {
     try{
         const userId = req.userId;
         const jobId = req.params.id;
@@ -284,7 +284,7 @@ const jobDeletionByIdController = async(req, res) => {
     }
 }
 
-const jobUpationByIdController = async(req, res) => {
+const recruiterJobUpationByIdController = async(req, res) => {
     try{
         const userId = req.userId;
         const jobId = req.params.id;
@@ -338,4 +338,4 @@ const jobUpationByIdController = async(req, res) => {
     }
 }
 
-module.exports = {recruiterProfileController, recruiterProfile, jobCreationController, jobFetchingController, jobFetchingByIdController, jobDeletionByIdController, jobUpationByIdController};
+module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController};

@@ -1,14 +1,14 @@
 const {Router} = require("express");
 const userMiddleware = require("../middlewares/userAuthMiddleware");
-const {recruiterProfileController, recruiterProfile, jobCreationController, jobFetchingController, jobFetchingByIdController, jobDeletionByIdController, jobUpationByIdController} = require("../controllers/recruiterController")
+const {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController} = require("../controllers/recruiterController")
 const router = Router();
 
 router.post('/profile', userMiddleware, recruiterProfileController);
 router.get('/profile', userMiddleware, recruiterProfile);
-router.post('/jobs', userMiddleware, jobCreationController);
-router.get('/jobs', userMiddleware, jobFetchingController);
-router.get('/jobs/:id', userMiddleware, jobFetchingByIdController);
-router.delete('/jobs/:id', userMiddleware, jobDeletionByIdController);
-router.patch('/jobs/:id', userMiddleware, jobUpationByIdController);
+router.post('/jobs', userMiddleware, recruiterJobCreationController);
+router.get('/jobs', userMiddleware, recruiterJobFetchingController);
+router.get('/jobs/:id', userMiddleware, recruiterJobFetchingByIdController);
+router.delete('/jobs/:id', userMiddleware, recruiterJobDeletionByIdController);
+router.patch('/jobs/:id', userMiddleware, recruiterJobUpationByIdController);
 
 module.exports = router;
