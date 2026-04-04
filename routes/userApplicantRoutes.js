@@ -1,3 +1,8 @@
 const {Router} = require("express");
+const userMiddleware = require("../middlewares/userAuthMiddleware");
+const applicantProfileController = require("../controllers/applicantController");
+const router = Router();
 
-//userMiddleware applicantProfileCreationController applicantProfileMiddleware
+router.post('/profile', userMiddleware, applicantProfileController);
+
+module.exports = router;

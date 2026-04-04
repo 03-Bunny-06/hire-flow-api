@@ -1,5 +1,6 @@
 const applicantSchema = require("../validations/applicantValidation");
 
+const User = require("../models/userModel");
 const Applicant = require("../models/applicantModel");
 
 const applicantProfileController = async(req, res) => {
@@ -37,6 +38,16 @@ const applicantProfileController = async(req, res) => {
         console.log(applicantAlreadyExists);
 
         //creating an applicant
+        const applicant = await Applicant.create(userId, ...data);
+
+        await User.findOne({_id: userId}, {
+            $set: {
+                isProfileCreated: true
+            }
+        })
+        res.status(201).json({
+            msg: "Applicant Profile created successfully!"
+        })
     }
     catch(e){
         res.status(500).json({
@@ -44,3 +55,5 @@ const applicantProfileController = async(req, res) => {
         })
     }
 }
+
+module.exports = applicantProfileController;

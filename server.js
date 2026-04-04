@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const adminRouter = require("./routes/adminRoutes");
 const userRouter = require("./routes/userRoutes");
 const recruiterRouter = require("./routes/userRecruiterRoutes");
+const applicantRouter = require("./routes/userApplicantRoutes");
 
 //Function Call to connect the Database URL
 const connectDb = require("./config/db")
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
 app.use('/user/recruiter', recruiterRouter);
+app.use('/user/applicant', applicantRouter);
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
