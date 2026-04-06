@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const Applicant = require("../models/applicantModel");
 const Job = require("../models/jobModel");
 
+//profile creation
 const applicantProfileController = async(req, res) => {
     try{
         const userId = req.userId;
@@ -57,6 +58,7 @@ const applicantProfileController = async(req, res) => {
     }
 }
 
+//profile fetching
 const applicantProfile = async(req, res) => {
     try{
         const userId = req.userId;
@@ -82,6 +84,7 @@ const applicantProfile = async(req, res) => {
     }
 }
 
+//job fetching
 const applicantJobFetchingController = async(req, res) => {
     try{
         const userId = req.userId;
@@ -139,6 +142,7 @@ const applicantJobFetchingController = async(req, res) => {
     }
 }
 
+//job fetching by id
 const applicantJobFetchingByIdController = async(req, res) => {
     try{
         const userId = req.userId;
