@@ -142,7 +142,7 @@ const applicantJobFetchingController = async(req, res) => {
     }
 }
 
-//job fetching by id //
+//job fetching by id
 const applicantJobFetchingByIdController = async(req, res) => {
     try{
         const userId = req.userId;
