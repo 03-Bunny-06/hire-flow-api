@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const applicantSchema = require("../validations/applicantValidation");
+const applicationSchema = require("../validations/applicationValidation");
 
 const User = require("../models/userModel");
 const Applicant = require("../models/applicantModel");
+const Application = require("../models/applicationModel");
 const Job = require("../models/jobModel");
 
 //profile creation
@@ -200,7 +202,31 @@ const applicantApplyingToAJobById = async(req, res) => {
             })
         }
 
-        
+        const data = {resumeUsed, status};
+
+        const validatedCredentials = applicationSchema.safeParse(data);
+
+        if(!validatedCredentials.success){
+            return res.status(400).json({
+                msg: 'Validation Falied',
+                error: validatedCredentials.error.message
+            })
+        }
+
+        const applicantAlreadyApplied = await Application.findOne({applicantId: applicantId, jobId: jobId});
+
+        console.log(applicantAlreadyApplied);
+
+        if(applicantAlreadyApplied){
+            return res.status(409).json({
+                msg: 'Applicant already applied for this job please try applying to a other jobs'
+            })
+        }
+
+        await Application.create(applicantId, jobId, ...data);
+        res.status(201).json({
+            msg: 'Applied successfully!'
+        })
     }
     catch(e){
         res.status(500).json({
@@ -209,4 +235,4 @@ const applicantApplyingToAJobById = async(req, res) => {
     }
 };
 
-module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController};
+module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById};
