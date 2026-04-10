@@ -180,4 +180,33 @@ const applicantJobFetchingByIdController = async(req, res) => {
     }
 }
 
+const applicantApplyingToAJobById = async(req, res) => {
+    try{
+        const userId = req.userId;
+        const jobId = req.params.id;
+
+        const resumeUsed = req.body.resumeLink;
+        const status = req.body.status;
+
+
+        const applicant = await Applicant.findOne({userId: userId});
+        const applicantId = applicant._id;
+
+        const isValidJobId = mongoose.isValidObjectId(applicantId);
+
+        if(!isValidJobId){
+            return res.status(404).json({
+                msg: 'Invalid Job ID'
+            })
+        }
+
+        
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+};
+
 module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController};
