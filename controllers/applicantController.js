@@ -182,6 +182,7 @@ const applicantJobFetchingByIdController = async(req, res) => {
     }
 }
 
+//applying for job
 const applicantApplyingToAJobById = async(req, res) => {
     try{
         const userId = req.userId;
