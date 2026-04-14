@@ -189,8 +189,6 @@ const applicantApplyingToAJobById = async(req, res) => {
         const jobId = req.params.id;
 
         const resumeUsed = req.body.resumeLink;
-        const status = req.body.status;
-
 
         const applicant = await Applicant.findOne({userId: userId});
         const applicantId = applicant._id;
@@ -203,7 +201,7 @@ const applicantApplyingToAJobById = async(req, res) => {
             })
         }
 
-        const data = {resumeUsed, status};
+        const data = {resumeUsed};
 
         const validatedCredentials = applicationSchema.safeParse(data);
 

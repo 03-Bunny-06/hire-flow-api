@@ -19,6 +19,7 @@ const applicationSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: typesOfStatus,
+        default: typesOfStatus[0],
         required: true
     }
 }, {timestamps: true})
