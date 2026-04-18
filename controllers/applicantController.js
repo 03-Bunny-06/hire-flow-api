@@ -216,7 +216,7 @@ const applicantApplyingToAJobById = async(req, res) => {
 
         console.log(applicantAlreadyApplied);
 
-        //already applied
+        //flow to handle already applied
         if(applicantAlreadyApplied){
             return res.status(409).json({
                 msg: 'Applicant already applied for this job please try applying to a other jobs'
