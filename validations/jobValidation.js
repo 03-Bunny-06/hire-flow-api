@@ -11,7 +11,7 @@ const jobSchema = z.object({
     typeOfEmployement: z.enum(typesOfEmployement),
     applyBy: z.coerce.date(),
     eligibilityCriteria: z.object({
-        educationDetails: z.string(),
+        educationDetails: z.array(z.string()),
         minYearOfGraduation: z.number(),
         maxYearOfGraduation: z.number()
     }),

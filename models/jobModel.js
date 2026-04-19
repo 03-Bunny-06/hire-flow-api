@@ -41,7 +41,7 @@ const jobSchema = new mongoose.Schema({
     },
     eligibilityCriteria: {
         educationDetails: {
-            type: String,
+            type: [String],
             required: true
         },
         minYearOfGraduation: {
