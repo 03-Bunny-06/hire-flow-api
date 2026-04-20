@@ -12,6 +12,7 @@ const applicantRouter = require("./routes/userApplicantRoutes");
 const connectDb = require("./config/db")
 connectDb();
 
+//route matching
 app.use(bodyParser.json());
 app.use('/admin', adminRouter);
 app.use('/user', userRouter);
