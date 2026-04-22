@@ -188,7 +188,7 @@ const applicantApplyingToAJobById = async(req, res) => {
         const userId = req.userId;
         const jobId = req.params.id;
 
-        const resumeUsed = req.body.resumeLink;
+        const resumeUsed = req.body.resumeUsed;
 
         const applicant = await Applicant.findOne({userId: userId});
         const applicantId = applicant._id;
@@ -253,7 +253,7 @@ const applicantApplyingToAJobById = async(req, res) => {
             })
         }
 
-        const application = await Application.create(applicantId, jobId, ...data);
+        const application = await Application.create({applicantId, jobId, resumeUsed});
         res.status(201).json({
             msg: 'Applied successfully!',
             application
