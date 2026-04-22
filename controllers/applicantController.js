@@ -201,6 +201,14 @@ const applicantApplyingToAJobById = async(req, res) => {
             })
         }
 
+        const job = await Job.findById(jobId);
+
+        if(!job){
+            return res.status(404).json({
+                msg: 'Job not found'
+            })
+        }
+
         const data = {resumeUsed};
 
         const validatedCredentials = applicationSchema.safeParse(data);
@@ -223,9 +231,32 @@ const applicantApplyingToAJobById = async(req, res) => {
             })
         }
 
-        await Application.create(applicantId, jobId, ...data);
+        const {eligibilityCriteria} = job;
+
+        const applicantDegree = applicant.educationDetails;
+        const splittedApplicantDegree = applicant.educationDetails.split("(")[0];
+        console.log(applicantDegree);
+        console.log(splittedApplicantDegree);
+
+        const isEducationValid = eligibilityCriteria.educationDetails.includes(applicantDegree) || eligibilityCriteria.educationDetails.includes(splittedApplicantDegree);
+        console.log(isEducationValid);
+
+        const isYearValid = applicant.yearOfGraduation >= eligibilityCriteria.minYearOfGraduation && applicant.yearOfGraduation <= eligibilityCriteria.maxYearOfGraduation;
+        console.log(isYearValid);
+
+        const isEligible = isEducationValid && isYearValid;
+        console.log(isEligible);
+
+        if(!isEligible){
+            return res.status(400).json({
+                msg: "You are not eligible for this job"
+            })
+        }
+
+        const application = await Application.create(applicantId, jobId, ...data);
         res.status(201).json({
-            msg: 'Applied successfully!'
+            msg: 'Applied successfully!',
+            application
         })
     }
     catch(e){
