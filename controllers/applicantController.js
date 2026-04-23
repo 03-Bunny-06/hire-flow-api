@@ -238,6 +238,7 @@ const applicantApplyingToAJobById = async(req, res) => {
         console.log(applicantDegree);
         console.log(splittedApplicantDegree);
 
+        //checking eligibility criteria
         const isEducationValid = eligibilityCriteria.educationDetails.includes(applicantDegree) || eligibilityCriteria.educationDetails.includes(splittedApplicantDegree);
         console.log(isEducationValid);
 
