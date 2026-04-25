@@ -193,7 +193,7 @@ const applicantApplyingToAJobById = async(req, res) => {
         const applicant = await Applicant.findOne({userId: userId});
         const applicantId = applicant._id;
 
-        const isValidJobId = mongoose.isValidObjectId(applicantId);
+        const isValidJobId = mongoose.isValidObjectId(jobId);
 
         if(!isValidJobId){
             return res.status(404).json({
@@ -239,7 +239,6 @@ const applicantApplyingToAJobById = async(req, res) => {
         console.log(splittedApplicantDegree);
 
         //checking eligibility criteria
-        //only eligible can apply to the job
         const isEducationValid = eligibilityCriteria.educationDetails.includes(applicantDegree) || eligibilityCriteria.educationDetails.includes(splittedApplicantDegree);
         console.log(isEducationValid);
 
