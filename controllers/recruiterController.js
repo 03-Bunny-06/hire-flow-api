@@ -344,4 +344,8 @@ const recruiterJobUpationByIdController = async(req, res) => {
     }
 }
 
+const recruiterFetchingAllApplications = async(req, res) => {
+
+};
+
 module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController};
