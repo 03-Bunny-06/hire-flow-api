@@ -344,7 +344,7 @@ const recruiterJobUpationByIdController = async(req, res) => {
     }
 }
 
-//recruiter fetching
+//recruiter fetching all applications
 const recruiterFetchingAllApplications = async(req, res) => {
     const recruiterId = req.params.id;
 };
