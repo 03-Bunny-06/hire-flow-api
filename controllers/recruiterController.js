@@ -345,7 +345,20 @@ const recruiterJobUpationByIdController = async(req, res) => {
 }
 
 const recruiterFetchingAllApplications = async(req, res) => {
-    const recruiterId = req.params.id;
+    const userId = req.userId;
+    const recruiter = await User.findOne({_id: userId});
+
+    console.log(recruiter._id);
+
+    const recruiterId = recruiter._id;
+
+    const jobs = await Job.find({recruiterId}, {_id: 1});
+
+    res.status(200).json({
+        jobId: jobs
+    })
+
+    console.log(jobs);
 };
 
-module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController};
+module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications};
