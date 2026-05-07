@@ -360,9 +360,9 @@ const recruiterFetchingAllApplications = async(req, res) => {
 
     const applications = await Application.find({jobId: {$in: jobsIdArray}});
 
-    console.log(!applications);
+    console.log(applications.length === 0);
 
-    if(!applications){
+    if(applications.length === 0){
         return res.status(404).json({
             msg: 'No applications'
         })
@@ -374,5 +374,20 @@ const recruiterFetchingAllApplications = async(req, res) => {
 
     console.log(applications);
 };
+
+const recruiterFetchingSpecificApplication = async(req, res) => {
+    const userId = req.userId;
+    const recruiter = await Recruiter.findOne({userId});
+
+    console.log(recruiter._id);
+
+    const recruiterId = recruiter._id;
+    
+    const jobs = await Job.find({recruiterId}).select('_id');
+
+    const jobsIdArray = jobs.map((job) => job._id);
+
+    //const application = await Application.find({$and: {jobId: {$in: {jobsIdArray}}}, {$in: }})
+}
 
 module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications};
