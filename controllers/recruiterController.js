@@ -357,7 +357,7 @@ const recruiterFetchingAllApplications = async(req, res) => {
     const jobsIdArray = jobs.map((job) => job._id);
 
     res.status(200).json({
-        jobId: jobsIdArray
+        jobsIdArray: jobsIdArray
     })
 
     console.log(jobs);
