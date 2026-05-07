@@ -7,6 +7,8 @@ const {jobSchema, updateJobSchema} = require("../validations/jobValidation");
 const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
 const Job = require("../models/jobModel");
+const Application = require("../models/applicationModel");
+
 
 //recruiter controller
 const recruiterProfileController = async(req, res) => {
@@ -356,11 +358,13 @@ const recruiterFetchingAllApplications = async(req, res) => {
 
     const jobsIdArray = jobs.map((job) => job._id);
 
+    const applications = await Application.find({jobId: {$in: jobsIdArray}});
+
     res.status(200).json({
-        jobsIdArray: jobsIdArray
+        applications: applications
     })
 
-    console.log(jobs);
+    console.log(applications);
 };
 
 module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications};
