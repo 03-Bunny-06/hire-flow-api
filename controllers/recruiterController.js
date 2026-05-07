@@ -360,6 +360,14 @@ const recruiterFetchingAllApplications = async(req, res) => {
 
     const applications = await Application.find({jobId: {$in: jobsIdArray}});
 
+    console.log(!applications);
+
+    if(!applications){
+        return res.status(404).json({
+            msg: 'No applications'
+        })
+    }
+
     res.status(200).json({
         applications: applications
     })
