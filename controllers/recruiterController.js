@@ -346,16 +346,18 @@ const recruiterJobUpationByIdController = async(req, res) => {
 
 const recruiterFetchingAllApplications = async(req, res) => {
     const userId = req.userId;
-    const recruiter = await User.findOne({_id: userId});
+    const recruiter = await Recruiter.findOne({userId});
 
     console.log(recruiter._id);
 
     const recruiterId = recruiter._id;
 
-    const jobs = await Job.find({recruiterId}, {_id: 1});
+    const jobs = await Job.find({recruiterId}).select('_id');
+
+    const jobsIdArray = jobs.map((job) => job._id);
 
     res.status(200).json({
-        jobId: jobs
+        jobId: jobsIdArray
     })
 
     console.log(jobs);
