@@ -388,6 +388,7 @@ const recruiterFetchingSpecificApplication = async(req, res) => {
     const jobsIdArray = jobs.map((job) => job._id);
 
     //const application = await Application.find({$and: {jobId: {$in: {jobsIdArray}}}, {$in: }})
+    
 }
 
 module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications};
