@@ -8,6 +8,7 @@ const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
 const Job = require("../models/jobModel");
 const Application = require("../models/applicationModel");
+const { application } = require("express");
 
 
 //recruiter controller
@@ -377,6 +378,7 @@ const recruiterFetchingAllApplications = async(req, res) => {
 
 const recruiterFetchingSpecificApplication = async(req, res) => {
     const userId = req.userId;
+    const applicationId = req.params.id;
     const recruiter = await Recruiter.findOne({userId});
 
     console.log(recruiter._id);
@@ -385,10 +387,19 @@ const recruiterFetchingSpecificApplication = async(req, res) => {
     
     const jobs = await Job.find({recruiterId}).select('_id');
 
-    const jobsIdArray = jobs.map((job) => job._id);
-
-    //const application = await Application.find({$and: {jobId: {$in: {jobsIdArray}}}, {$in: }})
+    const jobsIdArray = jobs.map(job => job._id);
     
+    const applications = await Application.find({jobId: {$in: jobsIdArray}});
+
+    const application = applications.find(applic => applic._id == applicationId);
+
+    console.log(application);
+
+    if(application){
+        return res.status(200).json({
+            application: application
+        })
+    }
 }
 
 module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications};
