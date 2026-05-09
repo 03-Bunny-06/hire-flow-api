@@ -391,15 +391,27 @@ const recruiterFetchingSpecificApplication = async(req, res) => {
     
     const applications = await Application.find({jobId: {$in: jobsIdArray}});
 
+    const isValidApplicationId = mongoose.isValidObjectId(applicationId);
+
+    if(!isValidApplicationId){
+        return res.status(404).json({
+            msg: 'Invalid Application ID'
+        })
+    }
+
     const application = applications.find(applic => applic._id == applicationId);
 
     console.log(application);
 
-    if(application){
-        return res.status(200).json({
-            application: application
+    if(application === null){
+        return res.status(404).json({
+            msg: 'Application Not Found'
         })
     }
+
+    res.status(200).json({
+        application: application
+    })
 }
 
 module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications};
