@@ -8,7 +8,7 @@ const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
 const Job = require("../models/jobModel");
 const Application = require("../models/applicationModel");
-const { application } = require("express");
+const { application, application } = require("express");
 
 
 //recruiter controller
@@ -399,7 +399,7 @@ const recruiterFetchingSpecificApplication = async(req, res) => {
         })
     }
 
-    const application = applications.find(applic => applic._id == applicationId);
+    const application = applications.find(application => application._id == applicationId);
 
     console.log(application);
 
@@ -414,4 +414,4 @@ const recruiterFetchingSpecificApplication = async(req, res) => {
     })
 }
 
-module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications};
+module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication};
