@@ -8,8 +8,6 @@ const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
 const Job = require("../models/jobModel");
 const Application = require("../models/applicationModel");
-const { application, application } = require("express");
-
 
 //recruiter controller
 const recruiterProfileController = async(req, res) => {
@@ -403,7 +401,7 @@ const recruiterFetchingSpecificApplication = async(req, res) => {
 
     console.log(application);
 
-    if(application === null){
+    if(application === undefined){
         return res.status(404).json({
             msg: 'Application Not Found'
         })
