@@ -8,6 +8,7 @@ const User = require("../models/userModel");
 const Recruiter = require("../models/recruiterModel");
 const Job = require("../models/jobModel");
 const Application = require("../models/applicationModel");
+const { application } = require("express");
 
 //recruiter controller
 const recruiterProfileController = async(req, res) => {
@@ -410,6 +411,35 @@ const recruiterFetchingSpecificApplication = async(req, res) => {
     res.status(200).json({
         application: application
     })
+}
+
+const recruiterModifyingtheApplicatonStatus = async(req, res) => {
+    const userId = req.userId;
+    const typesOfStatus = ['Applied', 'Hiring In Process', 'Hiring Done', 'Selected', 'Rejected'];
+    const applicationId = req.params.id;
+    const recruiter = await Recruiter.findOne({userId});
+
+    console.log(recruiter._id);
+
+    const recruiterId = recruiter._id;
+
+    const jobs = await Job.findOne({recruiterId}).select('_id');
+
+    const jobsIdArray = jobs.map(job => job._id);
+
+    const applications = await application.find({jobId: {$in: jobsIdArray}});
+
+    const isValidApplicationId = mongoose.isValidObjectId(applicationId);
+
+    if(!isValidApplicationId){
+        return res.status(404).json({
+            msg: 'Invalid Application ID'
+        })
+    }
+
+    const application = applications.find(application => application._id === applicationId);
+
+    console.log(application);
 }
 
 module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication};
