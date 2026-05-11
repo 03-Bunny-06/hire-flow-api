@@ -417,6 +417,7 @@ const recruiterModifyingtheApplicatonStatus = async(req, res) => {
     const userId = req.userId;
     const typesOfStatus = ['Applied', 'Hiring In Process', 'Hiring Done', 'Selected', 'Rejected'];
     const applicationId = req.params.id;
+    const status = req.params.status;
     const recruiter = await Recruiter.findOne({userId});
 
     console.log(recruiter._id);
@@ -440,6 +441,20 @@ const recruiterModifyingtheApplicatonStatus = async(req, res) => {
     const application = applications.find(application => application._id === applicationId);
 
     console.log(application);
+
+    const isValidStatus = typesOfStatus.includes(status); //true
+    const isApplicationExists = (application === undefined); //true
+
+    if(isValidStatus && isApplicationExists){
+        return res.status(200).json({
+            msg: 'Status modified successfully!',
+            application: application
+        })
+    }
+
+    res.status(404).json({
+        msg: 'Invalid Status (or) Application Not Found'
+    })
 }
 
-module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication};
+module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication, recruiterModifyingtheApplicatonStatus};
