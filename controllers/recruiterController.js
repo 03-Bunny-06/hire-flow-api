@@ -418,11 +418,7 @@ const recruiterModifyingtheApplicatonStatus = async(req, res) => {
 
     const recruiterId = recruiter._id;
 
-    const jobs = await Job.findOne({recruiterId}).select('_id');
-
-    const jobsIdArray = jobs.map(job => job._id);
-
-    const applications = await application.find({jobId: {$in: jobsIdArray}});
+    const jobsIdArray = await Job.distinct('_id', {recruiterId});
 
     const isValidApplicationId = mongoose.isValidObjectId(applicationId);
 
@@ -440,7 +436,7 @@ const recruiterModifyingtheApplicatonStatus = async(req, res) => {
     const isApplicationExists = (application === undefined); //true
 
     if(isValidStatus && isApplicationExists){
-        const modifyApplicationStatus = application
+        const application = await Application.find({_id:applicationId, jobId: {$in: jobsIdArray}, status: {$set: status}});
 
         return res.status(200).json({
             msg: 'Status modified successfully!',
