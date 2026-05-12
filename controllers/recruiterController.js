@@ -436,7 +436,7 @@ const recruiterModifyingtheApplicatonStatus = async(req, res) => {
     const isApplicationExists = (application === undefined); //true
 
     if(isValidStatus && isApplicationExists){
-        const application = await Application.find({_id:applicationId, jobId: {$in: jobsIdArray}, status: {$set: status}});
+        const application = await Application.find({_id:applicationId, jobId: {$in: jobsIdArray}, status: {$set: status}}, {new: true});
 
         return res.status(200).json({
             msg: 'Status modified successfully!',
