@@ -14,4 +14,6 @@ router.get('/applications', userMiddleware, recruiterFetchingAllApplications);
 router.get('/applications/:id', userMiddleware, recruiterFetchingSpecificApplication);
 router.patch('/applications/:id/status', userMiddleware, recruiterModifyingtheApplicatonStatus);
 
+
+
 module.exports = router;
