@@ -12,6 +12,6 @@ router.delete('/jobs/:id', userMiddleware, recruiterJobDeletionByIdController);
 router.patch('/jobs/:id', userMiddleware, recruiterJobUpationByIdController);
 router.get('/applications', userMiddleware, recruiterFetchingAllApplications);
 router.get('/applications/:id', userMiddleware, recruiterFetchingSpecificApplication);
-router.patch('/applications/:id/status', userMiddleware, recruiterModifyingtheApplicatonStatus);
+router.patch('/applications/:id/:status', userMiddleware, recruiterModifyingtheApplicatonStatus);
 
 module.exports = router;
