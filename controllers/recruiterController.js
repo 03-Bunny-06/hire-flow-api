@@ -347,117 +347,138 @@ const recruiterJobUpationByIdController = async(req, res) => {
 }
 
 const recruiterFetchingAllApplications = async(req, res) => {
-    const userId = req.userId;
-    const recruiter = await Recruiter.findOne({userId});
+    try{
+        const userId = req.userId;
+        const recruiter = await Recruiter.findOne({userId});
 
-    console.log(recruiter._id);
+        console.log(recruiter._id);
 
-    const recruiterId = recruiter._id;
+        const recruiterId = recruiter._id;
 
-    const jobsIdArray = await Job.distinct('_id', {recruiterId});
+        const jobsIdArray = await Job.distinct('_id', {recruiterId});
 
-    const applications = await Application.find({jobId: {$in: jobsIdArray}});
+        const applications = await Application.find({jobId: {$in: jobsIdArray}});
 
-    console.log(applications.length === 0);
+        console.log(applications.length === 0);
 
-    if(applications.length === 0){
-        return res.status(404).json({
-            msg: 'No applications'
+        if(applications.length === 0){
+            return res.status(404).json({
+                msg: 'No applications'
+            })
+        }
+
+        res.status(200).json({
+            applications: applications
+        })
+
+        console.log(applications);
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
         })
     }
-
-    res.status(200).json({
-        applications: applications
-    })
-
-    console.log(applications);
 };
 
 const recruiterFetchingSpecificApplication = async(req, res) => {
-    const userId = req.userId;
-    const applicationId = req.params.id;
-    const recruiter = await Recruiter.findOne({userId});
+    try{
+        const userId = req.userId;
+        const applicationId = req.params.id;
+        const recruiter = await Recruiter.findOne({userId});
 
-    console.log(recruiter._id);
+        console.log(recruiter._id);
 
-    const recruiterId = recruiter._id;
+        const recruiterId = recruiter._id;
 
-    const isValidApplicationId = mongoose.isValidObjectId(applicationId);
+        const isValidApplicationId = mongoose.isValidObjectId(applicationId);
 
-    if(!isValidApplicationId){
-        return res.status(404).json({
-            msg: 'Invalid Application ID'
-        })
-    }
+        if(!isValidApplicationId){
+            return res.status(404).json({
+                msg: 'Invalid Application ID'
+            })
+        }
 
-    const jobsIdArray = await Job.distinct('_id', {recruiterId});
-    
-    const application = await Application.find({_id:applicationId, jobId: {$in: jobsIdArray}});
+        const jobsIdArray = await Job.distinct('_id', {recruiterId});
+        
+        const application = await Application.find({_id:applicationId, jobId: {$in: jobsIdArray}});
 
-    console.log(application);
+        console.log(application);
 
-    if(application === undefined){
-        return res.status(404).json({
-            msg: 'Application Not Found'
-        })
-    }
+        if(application === undefined){
+            return res.status(404).json({
+                msg: 'Application Not Found'
+            })
+        }
 
-    res.status(200).json({
-        application: application
-    })
-}
-
-const recruiterModifyingtheApplicatonStatus = async(req, res) => {
-    const userId = req.userId;
-    const typesOfStatus = ['Hiring In Process', 'Hiring Done', 'Selected', 'Rejected'];
-    const applicationId = req.params.id;
-    const status = req.params.status;
-    const recruiter = await Recruiter.findOne({userId});
-
-    console.log(recruiter._id);
-
-    const recruiterId = recruiter._id;
-
-    const jobsIdArray = await Job.distinct('_id', {recruiterId});
-
-    const isValidApplicationId = mongoose.isValidObjectId(applicationId);
-
-    if(!isValidApplicationId){
-        return res.status(404).json({
-            msg: 'Invalid Application ID'
-        })
-    }
-
-    const application = await Application.find({_id: applicationId});
-
-    console.log(application);
-
-    const isValidStatus = typesOfStatus.includes(status); //true
-    console.log(isValidStatus);
-
-    const isApplicationExists = (application !== undefined); //true
-    console.log(isApplicationExists);
-
-    if(isValidStatus && isApplicationExists){
-        const application = await Application.findOneAndUpdate({_id:applicationId,
-                                                                jobId: {$in: jobsIdArray}
-                                                               }, 
-                                                               {
-                                                                $set: {status: status}
-                                                               },
-                                                               {
-                                                                new: true
-                                                               });
-
-        return res.status(200).json({
-            msg: 'Status modified successfully!',
+        res.status(200).json({
             application: application
         })
     }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
 
-    res.status(404).json({
-        msg: 'Invalid Status (or) Application Not Found'
-    })
+const recruiterModifyingtheApplicatonStatus = async(req, res) => {
+    try{
+        const userId = req.userId;
+        const typesOfStatus = ['Hiring In Process', 'Hiring Done', 'Selected', 'Rejected'];
+        const applicationId = req.params.id;
+        const status = req.params.status;
+        const recruiter = await Recruiter.findOne({userId});
+
+        console.log(recruiter._id);
+
+        const recruiterId = recruiter._id;
+
+        const jobsIdArray = await Job.distinct('_id', {recruiterId});
+
+        const isValidApplicationId = mongoose.isValidObjectId(applicationId);
+
+        if(!isValidApplicationId){
+            return res.status(404).json({
+                msg: 'Invalid Application ID'
+            })
+        }
+
+        const application = await Application.find({_id: applicationId});
+
+        console.log(application);
+
+        const isValidStatus = typesOfStatus.includes(status); //true
+        console.log(isValidStatus);
+
+        const isApplicationExists = (application !== undefined); //true
+        console.log(isApplicationExists);
+
+        if(isValidStatus && isApplicationExists){
+            const application = await Application.findOneAndUpdate({_id:applicationId,
+                                                                    jobId: {$in: jobsIdArray}
+                                                                }, 
+                                                                {
+                                                                    $set: {status: status}
+                                                                },
+                                                                {
+                                                                    new: true
+                                                                });
+
+            return res.status(200).json({
+                msg: 'Status modified successfully!',
+                application: application
+            })
+        }
+
+        res.status(404).json({
+            msg: 'Invalid Status (or) Application Not Found'
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
 }
 
 //exports for recruiter ->
