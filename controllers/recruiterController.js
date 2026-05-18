@@ -409,7 +409,7 @@ const recruiterFetchingSpecificApplication = async(req, res) => {
 
 const recruiterModifyingtheApplicatonStatus = async(req, res) => {
     const userId = req.userId;
-    const typesOfStatus = ['Applied', 'Hiring In Process', 'Hiring Done', 'Selected', 'Rejected'];
+    const typesOfStatus = ['Hiring In Process', 'Hiring Done', 'Selected', 'Rejected'];
     const applicationId = req.params.id;
     const status = req.params.status;
     const recruiter = await Recruiter.findOne({userId});
