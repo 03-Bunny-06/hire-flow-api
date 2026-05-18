@@ -481,5 +481,33 @@ const recruiterModifyingtheApplicatonStatus = async(req, res) => {
     }
 }
 
+const recruiterDeletingSpecificApplication = async(req, res) => {
+    const userId = req.userId;
+    const applicationId = req.params.id;
+    const recruiter = await Recruiter.findOne({userId});
+
+    const recruiterId = recruiter._id;
+
+    const isValidApplicationId = mongoose.isValidObjectId(applicationId);
+
+    if(!isValidApplicationId){
+        return res.status(404).json({
+            msg: 'Invalid Application ID'
+        })
+    }
+
+    const jobsIdArray = await Job.distinct('_id', {recruiterId});
+
+    console.log(jobsIdArray);
+
+    const deleteApplication = await Application.findByIdAndDelete({_id: applicationId, jobId: {$in: jobsIdArray}});
+
+    console.log(deleteApplication);
+
+    return res.status(200).json({
+        msg: 'Deleted application successfully!'
+    })
+}
+
 //exports for recruiter ->
-module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication, recruiterModifyingtheApplicatonStatus};
+module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication, recruiterModifyingtheApplicatonStatus, recruiterDeletingSpecificApplication};

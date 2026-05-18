@@ -1,6 +1,6 @@
 const {Router} = require("express");
 const userMiddleware = require("../middlewares/userAuthMiddleware");
-const {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication, recruiterModifyingtheApplicatonStatus} = require("../controllers/recruiterController")
+const {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication, recruiterModifyingtheApplicatonStatus, recruiterDeletingSpecificApplication} = require("../controllers/recruiterController")
 const router = Router();
 
 router.post('/profile', userMiddleware, recruiterProfileController);
@@ -13,5 +13,6 @@ router.patch('/jobs/:id', userMiddleware, recruiterJobUpationByIdController);
 router.get('/applications', userMiddleware, recruiterFetchingAllApplications);
 router.get('/applications/:id', userMiddleware, recruiterFetchingSpecificApplication);
 router.patch('/applications/:id/:status', userMiddleware, recruiterModifyingtheApplicatonStatus);
+router.delete('/applications/:id', userMiddleware, recruiterDeletingSpecificApplication);
 
 module.exports = router;
