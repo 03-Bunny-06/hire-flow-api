@@ -509,5 +509,5 @@ const recruiterDeletingSpecificApplication = async(req, res) => {
     })
 }
 
-//exports for recruiter ->
+
 module.exports = {recruiterProfileController, recruiterProfile, recruiterJobCreationController, recruiterJobFetchingController, recruiterJobFetchingByIdController, recruiterJobDeletionByIdController, recruiterJobUpationByIdController, recruiterFetchingAllApplications, recruiterFetchingSpecificApplication, recruiterModifyingtheApplicatonStatus, recruiterDeletingSpecificApplication};
