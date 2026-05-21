@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const typesOfStatus = ['Hiring In Process', 'Hiring Done', 'Selected', 'Rejected']
+const typesOfStatus = ['Applied', 'Hiring In Process', 'Hiring Done', 'Selected', 'Rejected']
 const applicationSchema = new mongoose.Schema({
     applicantId: {
         type: mongoose.Schema.Types.ObjectId,
