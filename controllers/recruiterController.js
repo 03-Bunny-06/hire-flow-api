@@ -14,6 +14,7 @@ const { application } = require("express");
 const recruiterProfileController = async(req, res) => {
     try{
         const userId = req.userId;
+        const roles = req.roles;
         const name = req.body.name;
         const nameOfCompany = req.body.nameOfCompany;
         const companyUrl = req.body.companyUrl;
@@ -30,6 +31,14 @@ const recruiterProfileController = async(req, res) => {
             return res.status(400).json({
                 msg: 'Validation Falied',
                 error: validatedCredentials.error.message
+            })
+        }
+
+        console.log(roles);
+
+        if(roles === "applicant"){
+            return res.status(409).json({
+                msg: 'This user already exists as a Applicant cannot create a profile as Recruiter.'
             })
         }
 

@@ -6,11 +6,13 @@ const User = require("../models/userModel");
 const Applicant = require("../models/applicantModel");
 const Application = require("../models/applicationModel");
 const Job = require("../models/jobModel");
+const Recruiter = require("../models/recruiterModel");
 
 //profile creation
 const applicantProfileController = async(req, res) => {
     try{
         const userId = req.userId;
+        const roles = req.roles;
         const name = req.body.name;
         const educationDetails = req.body.educationDetails;
         const yearOfGraduation = req.body.yearOfGraduation;
@@ -33,6 +35,14 @@ const applicantProfileController = async(req, res) => {
         }
 
         const applicantAlreadyExists = await Applicant.findOne({userId: userId});
+        //const userExistsAsRecruiter = await Recruiter.findOne({userId: userId});
+        console.log(roles);
+
+        if(roles === "recruiter"){
+            return res.status(409).json({
+                msg: 'This user already exists as a Recruiter cannot create a profile as Applicant.'
+            })
+        }
 
         if(applicantAlreadyExists){
             return res.status(409).json({
@@ -50,7 +60,7 @@ const applicantProfileController = async(req, res) => {
             isProfileCreated: true
         }})
         res.status(201).json({
-            msg: 'Recruiter Profile created successfully!'
+            msg: 'Applicant Profile created successfully!'
         })
     }
     catch(e){
@@ -266,5 +276,9 @@ const applicantApplyingToAJobById = async(req, res) => {
         })
     }
 };
+
+// const applicantFetchingAppliedJobs = async(req, res) => {
+//     const 
+// }
 
 module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById};

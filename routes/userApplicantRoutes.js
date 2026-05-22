@@ -8,5 +8,6 @@ router.get('/profile', userMiddleware, applicantProfile);
 router.get('/jobs', userMiddleware, applicantJobFetchingController);
 router.get('/jobs/:id', userMiddleware, applicantJobFetchingByIdController);
 router.post('/jobs/apply/:id', userMiddleware, applicantApplyingToAJobById);
+router.post('/applied-jobs', userMiddleware);
 
 module.exports = router;
