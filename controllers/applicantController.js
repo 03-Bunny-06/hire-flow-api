@@ -301,4 +301,6 @@ const applicantFetchingAppliedJobs = async(req, res) => {
     })
 }
 
+
+
 module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById, applicantFetchingAppliedJobs};
