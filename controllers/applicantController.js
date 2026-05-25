@@ -278,29 +278,34 @@ const applicantApplyingToAJobById = async(req, res) => {
 };
 
 const applicantFetchingAppliedJobs = async(req, res) => {
-    const userId = req.userId;
-    
-    const applicant = await Applicant.findOne({userId: userId});
-    const applicantId = applicant._id;
+    try{
+        const userId = req.userId;
+        
+        const applicant = await Applicant.findOne({userId: userId});
+        const applicantId = applicant._id;
 
-    console.log(applicantId);
+        console.log(applicantId);
 
-    const applications = await Application.find({applicantId: applicantId}).populate('jobId').sort({createdAt: -1});
+        const applications = await Application.find({applicantId: applicantId}).populate('jobId').sort({createdAt: -1});
 
-    console.log(applications);
+        console.log(applications);
 
-    if(applications === [] || applications.length === 0){
-        return res.status(404).json({
-            msg: 'Applicant have not applied to any jobs yet'
+        if(applications === [] || applications.length === 0){
+            return res.status(404).json({
+                msg: 'Applicant have not applied to any jobs yet'
+            })
+        }
+
+        return res.status(200).json({
+            msg: 'Jobs applied by Applicant',
+            applications: applications
         })
     }
-
-    return res.status(200).json({
-        msg: 'Jobs applied by Applicant',
-        applications: applications
-    })
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
 }
-
-
 
 module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById, applicantFetchingAppliedJobs};

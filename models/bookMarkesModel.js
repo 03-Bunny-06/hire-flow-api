@@ -11,10 +11,8 @@ const bookmarksSchema = new mongoose.Schema({
         ref: 'Job',
         required: true
     },
-    savedAt: {
-        type: Date,
-        default: Date.now
-    }
+},{
+    timestamps: true
 })
 
 const Bookmarks = mongoose.model('Bookmarks', bookmarksSchema)
