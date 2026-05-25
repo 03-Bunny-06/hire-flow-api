@@ -7,6 +7,7 @@ const Applicant = require("../models/applicantModel");
 const Application = require("../models/applicationModel");
 const Job = require("../models/jobModel");
 const Recruiter = require("../models/recruiterModel");
+const Bookmarks = require("../models/bookmarkesModel");
 
 //profile creation
 const applicantProfileController = async(req, res) => {
@@ -346,4 +347,36 @@ const applicantFetchingAppliedJobs = async(req, res) => {
     }
 }
 
-module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById, applicantFetchingAppliedJobs};
+const applicantBookmarkingJobs = async(req, res) => {
+    try{
+        const userId = req.userId;
+        const jobId = req.params.id;
+
+        const applicant = await Applicant.findOne({userId: userId});
+        const applicantId = applicant._id;
+
+        if (applicant === null){
+                return res.status(404).json({
+                    msg: 'Applicant not found!'
+                })
+            }
+
+        console.log(applicantId);
+        
+        const bookmarkJob = await Bookmarks.create({
+            applicantId,
+            jobId
+        })
+
+        return res.status(201).json({
+            msg: 'Bookmarked job successfully!'
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById, applicantFetchingAppliedJobs, applicantBookmarkingJobs};
