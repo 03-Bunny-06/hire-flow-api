@@ -85,6 +85,14 @@ const applicantProfile = async(req, res) => {
 
         const applicant = await Applicant.findOne({userId: userId});
 
+        if (applicant === null){
+            return res.status(404).json({
+                msg: 'Applicant not found!'
+            })
+        }
+
+        console.log(applicant);
+
         res.status(200).json({
             profile: applicant
         })
@@ -104,6 +112,14 @@ const applicantJobFetchingController = async(req, res) => {
         const l = req.query.limit;
 
         const applicant = await Applicant.findOne({userId: userId});
+
+        if (applicant === null){
+            return res.status(404).json({
+                msg: 'Applicant not found!'
+            })
+        }
+
+        console.log(applicant);
 
         const applicantName = applicant.name;
 
@@ -162,6 +178,14 @@ const applicantJobFetchingByIdController = async(req, res) => {
 
         const applicant = await Applicant.findOne({userId: userId});
 
+        if (applicant === null){
+            return res.status(404).json({
+                msg: 'Applicant not found!'
+            })
+        }
+
+        console.log(applicantId);
+
         const isValidJobId = mongoose.isValidObjectId(jobId);
 
         if(!isValidJobId){
@@ -202,6 +226,14 @@ const applicantApplyingToAJobById = async(req, res) => {
 
         const applicant = await Applicant.findOne({userId: userId});
         const applicantId = applicant._id;
+
+        if (applicant === null){
+            return res.status(404).json({
+                msg: 'Applicant not found!'
+            })
+        }
+
+        console.log(applicantId);
 
         const isValidJobId = mongoose.isValidObjectId(jobId);
 
@@ -283,6 +315,12 @@ const applicantFetchingAppliedJobs = async(req, res) => {
         
         const applicant = await Applicant.findOne({userId: userId});
         const applicantId = applicant._id;
+
+        if (applicant === null){
+            return res.status(404).json({
+                msg: 'Applicant not found!'
+            })
+        }
 
         console.log(applicantId);
 
