@@ -1,6 +1,6 @@
 const {Router} = require("express");
 const userMiddleware = require("../middlewares/userAuthMiddleware");
-const {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById, applicantFetchingAppliedJobs, applicantBookmarkingJobs, applicantFetchingAllBookmarkedJobs} = require("../controllers/applicantController");
+const {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById, applicantFetchingAppliedJobs, applicantBookmarkingJobs, applicantFetchingAllBookmarkedJobs, applicantRemovingABookmarkedJob} = require("../controllers/applicantController");
 const router = Router();
 
 router.post('/profile', userMiddleware, applicantProfileController);
@@ -11,5 +11,6 @@ router.post('/jobs/apply/:id', userMiddleware, applicantApplyingToAJobById);
 router.get('/applied-jobs', userMiddleware, applicantFetchingAppliedJobs);
 router.post('/bookmarked-jobs/:id', userMiddleware, applicantBookmarkingJobs);
 router.get('/bookmarked-jobs', userMiddleware, applicantFetchingAllBookmarkedJobs);
+router.delete('/bookmarked-jobs/:id', userMiddleware, applicantRemovingABookmarkedJob);
 
 module.exports = router;
