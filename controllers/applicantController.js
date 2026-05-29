@@ -423,7 +423,7 @@ const applicantFetchingAllBookmarkedJobs = async(req, res) => {
 
 const applicantRemovingABookmarkedJob = async (req, res) => {
     const userId = req.userId;
-    const jobId = req.params.id;
+    const bookmarkId = req.params.id;
 
     const applicant = await Applicant.findOne({userId: userId});
     
@@ -436,15 +436,15 @@ const applicantRemovingABookmarkedJob = async (req, res) => {
     const applicantId = applicant._id;
     console.log(applicantId);
 
-    const isValidJobId = mongoose.isValidObjectId(jobId);
+    const isValidBookmarkId = mongoose.isValidObjectId(bookmarkId);
 
-    if (!isValidJobId){
+    if (!isValidBookmarkId){
         return res.status(409).json({
-            msg: 'Invalid JobID'
+            msg: 'Invalid BookmarkID'
         })
     }
 
-    const removeBookmark = await Bookmarks.findByIdAndDelete({applicantId: applicantId, jobId: jobId});
+    const removeBookmark = await Bookmarks.findByIdAndDelete({id: bookmarkId, applicantId: applicantId});
 
     return res.status(200).json({
         msg: 'Bookmark removed successfully!'
