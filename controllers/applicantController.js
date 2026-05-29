@@ -315,7 +315,6 @@ const applicantFetchingAppliedJobs = async(req, res) => {
         const userId = req.userId;
         
         const applicant = await Applicant.findOne({userId: userId});
-        const applicantId = applicant._id;
 
         if (applicant === null){
             return res.status(404).json({
@@ -323,6 +322,7 @@ const applicantFetchingAppliedJobs = async(req, res) => {
             })
         }
 
+        const applicantId = applicant._id;
         console.log(applicantId);
 
         const applications = await Application.find({applicantId: applicantId}).populate('jobId').sort({createdAt: -1});
@@ -379,4 +379,39 @@ const applicantBookmarkingJobs = async(req, res) => {
     }
 }
 
-module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById, applicantFetchingAppliedJobs, applicantBookmarkingJobs};
+const applicantFetchingAllBookmarkedJobs = async(req, res) => {
+    try{
+        const userId = req.userId;
+
+        const applicant = await Applicant.findOne({userId: userId});
+        
+        if(applicant === null){
+            return res.status(404).json({
+                msg: 'Applicant not found!'
+            })
+        }
+        
+        const applicantId = applicant._id;
+        console.log(applicantId);
+
+        const bookmarkedJobs = await Bookmarks.find({applicantId: applicantId}).populate('jobId').sort({createdAt: -1});
+
+        if (bookmarkedJobs === [] || bookmarkedJobs.length === 0){
+            return res.status(404).json({
+                msg: 'Applicant havee not bookmarked any jobs yet!'
+            })
+        }
+
+        return res.status(200).json({
+            msg: 'Bookmarks fetched successfully!',
+            bookmarkedJobs: bookmarkedJobs
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
+module.exports = {applicantProfileController, applicantProfile, applicantJobFetchingController, applicantJobFetchingByIdController, applicantApplyingToAJobById, applicantFetchingAppliedJobs, applicantBookmarkingJobs, applicantFetchingAllBookmarkedJobs};
