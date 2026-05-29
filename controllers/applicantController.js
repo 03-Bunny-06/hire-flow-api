@@ -362,6 +362,13 @@ const applicantBookmarkingJobs = async(req, res) => {
             }
 
         console.log(applicantId);
+
+        const alreadyBookmarked = await Bookmarks.findOne({applicantId, jobId});
+        if (alreadyBookmarked !== null){
+            return res.status(409).json({
+                msg: 'Job is already bookmarked try bookmarking an other job'
+            })
+        }
         
         const bookmarkJob = await Bookmarks.create({
             applicantId,
