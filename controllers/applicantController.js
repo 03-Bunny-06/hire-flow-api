@@ -444,7 +444,7 @@ const applicantRemovingABookmarkedJob = async (req, res) => {
         })
     }
 
-    const removeBookmark = await Bookmarks.findByIdAndDelete({_id: applicantId, jobId: jobId});
+    const removeBookmark = await Bookmarks.findByIdAndDelete({applicantId: applicantId, jobId: jobId});
 
     return res.status(200).json({
         msg: 'Bookmark removed successfully!'
