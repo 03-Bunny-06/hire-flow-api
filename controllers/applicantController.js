@@ -443,6 +443,7 @@ const applicantRemovingABookmarkedJob = async (req, res) => {
             msg: 'Invalid BookmarkID'
         })
     }
+    
 
     const removeBookmark = await Bookmarks.findByIdAndDelete({_id: bookmarkId, applicantId: applicantId});
 
