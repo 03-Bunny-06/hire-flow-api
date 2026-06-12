@@ -15,7 +15,6 @@ const userMiddleware = async(req, res, next) => {
     const splitToken = token.split(" ");
     console.log(splitToken);
     const rawToken = splitToken[1];
-    
 
     try{
         const JWT_KEY = process.env.JWT_KEY;
