@@ -30,7 +30,7 @@ const userMiddleware = async(req, res, next) => {
         }
 
         else{
-            return res.status(400).json({
+            return res.status(404).json({
                 msg: 'UserId not found in the token'
             })
         }
