@@ -3,22 +3,23 @@ const bcrypt = require("bcrypt");
 const env = require("dotenv");
 env.config({path: '../.env'})
 
-const adminSchema = require("../validations/adminValidation");
+const {adminRegisterSchema, adminSignInSchema} = require("../validations/adminValidation");
 const Admin = require("../models/adminModel");
 
 //SignUp/Register (new admin)
 const adminRegisterController = async (req, res) => {
     try{
         const name = req.headers.name;
+        const email = req.headers.email;
         const password = req.headers.password;
 
         const saltRounds = 10; 
 
-        const data = {name, password};
+        const data = {name, email, password};
 
         console.log(data);
 
-        const validatedCredentials = adminSchema.safeParse(data);
+        const validatedCredentials = adminRegisterSchema.safeParse(data);
 
         console.log(validatedCredentials);
         
@@ -58,7 +59,7 @@ const adminSignInController = async(req, res) => {
 
         const data = {name, password}
 
-        const validatedCredentials = adminSchema.safeParse(data);
+        const validatedCredentials = adminSignInSchema.safeParse(data);
 
         if(!validatedCredentials.success){
             return res.status(400).json({
