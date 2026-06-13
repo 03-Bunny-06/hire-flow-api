@@ -30,7 +30,11 @@ const adminRegisterController = async (req, res) => {
             })
         }
 
-        const adminAlreadyExists = await Admin.findOne({name: validatedCredentials.data.name});
+        const adminAlreadyExists = await Admin.findOne({$or: [
+                                                                {name: validatedCredentials.data.name}, 
+                                                                {email: validatedCredentials.data.email}
+                                                             ]
+                                                        });
         if(adminAlreadyExists){
             return res.status(409).json({
                 msg: "Admin already exists try signin instead."
@@ -38,7 +42,7 @@ const adminRegisterController = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(validatedCredentials.data.password, saltRounds);
-        await Admin.create({name: validatedCredentials.data.name, password: hashedPassword});
+        await Admin.create({name: validatedCredentials.data.name, email: validatedCredentials.data.email, password: hashedPassword});
         return res.status(201).json({
             msg: "Admin created successfully!"
         })
