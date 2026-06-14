@@ -101,4 +101,5 @@ const adminSignInController = async(req, res) => {
     }
 }
 
+
 module.exports = {adminRegisterController, adminSignInController};
