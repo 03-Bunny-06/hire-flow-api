@@ -101,4 +101,28 @@ const adminSignInController = async(req, res) => {
     }
 }
 
+const adminViewingDashboardStats = async(req, res) => {
+    try{
+        const adminId = req.adminId;
+        console.log(adminId);
+
+        const adminInfo = await Admin.findOne({_id: adminId});
+
+        console.log(adminInfo);
+
+        const adminName = adminInfo.name;
+        const adminEmail = adminInfo.email;
+
+        console.log(adminName);
+        console.log(adminEmail);
+
+        
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
+        })
+    }
+}
+
 module.exports = {adminRegisterController, adminSignInController};
