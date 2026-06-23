@@ -103,6 +103,7 @@ const adminSignInController = async(req, res) => {
 
 const adminViewingDashboardStats = async(req, res) => {
     try{
+        //getting info of admin the email
         const adminId = req.adminId;
         console.log(adminId);
 
