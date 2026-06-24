@@ -126,4 +126,5 @@ const adminViewingDashboardStats = async(req, res) => {
     }
 }
 
+
 module.exports = {adminRegisterController, adminSignInController};
